@@ -4,6 +4,7 @@
 
 <script setup>
 import * as THREE from "three";
+import { onMounted } from "vue";
 
 // 1、创建场景
 const scene = new THREE.Scene();
@@ -35,8 +36,8 @@ document.body.appendChild(renderer.domElement);
 const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
 // 5.2、创建材质对象
 const cubeMaterial = new THREE.MeshBasicMaterial({
-  color: 'pink', // 颜色
-  wireframe: false, // 是否是线框模式
+  color: "pink", // 颜色
+  wireframe: true, // 是否是线框模式
 });
 // 5.3、创建网格模型对象
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
@@ -44,17 +45,17 @@ const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(cube);
 
 
-// 7、添加动画，让图形动起来
-function animation() {
-  cube.rotation.x = cube.rotation.x + 0.01;
-  cube.rotation.y = cube.rotation.y + 0.01;
+onMounted(() => {
+  // 7、添加动画，让图形动起来
+  function animation() {
+    cube.rotation.x = cube.rotation.x + 0.01;
+    cube.rotation.y = cube.rotation.y + 0.01;
 
-  // 6、渲染，传入场景和相机
-  renderer.render(scene, camera);
+    // 6、渲染，传入场景和相机
+    renderer.render(scene, camera);
 
-  requestAnimationFrame(animation);
-}
-animation()
+    requestAnimationFrame(animation);
+  }
+  animation();
+});
 </script>
-
-<style scoped></style>
