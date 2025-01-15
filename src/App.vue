@@ -33,7 +33,7 @@ document.body.appendChild(renderer.domElement);
 
 // 5、添加一个立方体
 // 5.1、创建立方体对象
-const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 // 5.2、创建材质对象
 const cubeMaterial = new THREE.MeshBasicMaterial({
   color: "pink", // 颜色
@@ -41,8 +41,13 @@ const cubeMaterial = new THREE.MeshBasicMaterial({
 });
 // 5.3、创建网格模型对象
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+cube.position.z = -10 // 调整z轴位置,近大远小
+
 // 5.4、添加到场景中
 scene.add(cube);
+
+scene.fog = new THREE.Fog(0xffffff, 1, 50);
 
 // 6、添加一个平面，用来接收阴影
 // 6.1、创建平面对象
