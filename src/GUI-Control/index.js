@@ -133,6 +133,26 @@ const basicType = {
       camera.far = value;
     },
   },
+
+  side: {
+    extends: [["front", "back", "double"]],
+    getValue: function () {
+      return "front";
+    },
+    setValue: function (item, value) {
+      switch (value) {
+        case "front":
+          item.side = THREE.FrontSide;
+          break;
+        case "back":
+          item.side = THREE.BackSide;
+          break;
+        case "double":
+          item.side = THREE.DoubleSide;
+          break;
+      }
+    },
+  },
 };
 
 const itemTypes = {
@@ -149,6 +169,13 @@ const itemTypes = {
     "visible",
   ],
   MeshDepthMaterial: ["wireframe", "camerNear", "camerFar"],
+  MeshNormalMaterial: [
+    "opacity",
+    "transparent",
+    "wireframe",
+    "visible",
+    "side",
+  ],
 };
 
 export function initGUIControl(item, camera) {
