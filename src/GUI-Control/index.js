@@ -1,5 +1,10 @@
 import * as dat from "dat.gui";
-import { AmbientLight, MeshBasicMaterial, PointLight } from "three";
+import {
+  AmbientLight,
+  MeshBasicMaterial,
+  MeshDepthMaterial,
+  PointLight,
+} from "three";
 
 const basicType = {
   // 颜色
@@ -97,7 +102,7 @@ const basicType = {
     },
     setValue: function (item, value) {
       item.wireframe = value;
-    }
+    },
   },
 
   visible: {
@@ -106,9 +111,28 @@ const basicType = {
     },
     setValue: function (item, value) {
       item.visible = value;
-    }
-  }
+    },
+  },
 
+  camerNear: {
+    extends: [0, 50],
+    getValue: function (item, camera) {
+      return camera.near;
+    },
+    setValue: function (item, value, camera) {
+      camera.near = value;
+    },
+  },
+
+  camerFar: {
+    extends: [50, 1000],
+    getValue: function (item, camera) {
+      return camera.far;
+    },
+    setValue: function (item, value, camera) {
+      camera.far = value;
+    },
+  },
 };
 
 const itemTypes = {
@@ -124,9 +148,10 @@ const itemTypes = {
     "wireframe",
     "visible",
   ],
+  MeshDepthMaterial: ["wireframe", "camerNear", "camerFar"],
 };
 
-export function initGUIControl(item) {
+export function initGUIControl(item, camera) {
   const typeList = itemTypes[item.type];
 
   const controls = {};
@@ -141,7 +166,7 @@ export function initGUIControl(item) {
     let child = basicType[typeList[i]];
 
     if (child) {
-      controls[typeList[i]] = child.getValue(item);
+      controls[typeList[i]] = child.getValue(item, camera);
 
       const childExtends = child.extends || [];
       console.log("child.method", child.method);
@@ -150,7 +175,7 @@ export function initGUIControl(item) {
         typeList[i],
         ...childExtends
       ).onChange(function (value) {
-        child.setValue(item, value);
+        child.setValue(item, value, camera);
       });
     }
   }
