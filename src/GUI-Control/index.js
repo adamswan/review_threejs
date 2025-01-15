@@ -1,5 +1,5 @@
 import * as dat from "dat.gui";
-import { AmbientLight } from "three";
+import { AmbientLight, PointLight } from "three";
 
 const basicType = {
   // 颜色
@@ -65,6 +65,8 @@ const basicType = {
 const itemTypes = {
   SpotLight: ["color", "intensity", "distance", "angle"], // 点光源
   AmbientLight: ["color"], // 环境光
+  PointLight: ["color", "intensity", "distance"],
+  DirectionalLight: ["color", "intensity"],
 };
 
 export function initGUIControl(item) {
@@ -72,12 +74,11 @@ export function initGUIControl(item) {
 
   const controls = {};
 
-  if (typeList.length === 0) {
+  if (!typeList || typeList.length === 0) {
     return;
   }
 
   const GUI = new dat.GUI();
-
 
   for (let i = 0; i < typeList.length; i++) {
     let child = basicType[typeList[i]];
@@ -86,7 +87,7 @@ export function initGUIControl(item) {
       controls[typeList[i]] = child.getValue(item);
 
       const childExtends = child.extends || [];
-        console.log('child.method', child.method)
+      console.log("child.method", child.method);
       GUI[child.method || "add"](
         controls,
         typeList[i],
