@@ -9,7 +9,6 @@ import { onMounted } from "vue";
 // 1、创建场景
 const scene = new THREE.Scene();
 
-
 // 2、创建相机
 const camera = new THREE.PerspectiveCamera(
   45, // 角度
@@ -20,61 +19,54 @@ const camera = new THREE.PerspectiveCamera(
 // 设置相机位置
 camera.position.set(0, 0, 20);
 
-
 // 3、创建渲染器
 const renderer = new THREE.WebGLRenderer();
 // 设置渲染器尺寸大小
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-
-// 4、将渲染器添加到body
+// 4、将渲染器添加到 body
 document.body.appendChild(renderer.domElement);
-
 
 // 5、添加一个立方体
 // 5.1、创建立方体对象
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
 // 5.2、创建材质对象
-const cubeMaterial = new THREE.MeshBasicMaterial({
-  color: "pink", // 颜色
+const cubeMaterial = new THREE.MeshLambertMaterial({
+  color: 'pink', // 颜色
   wireframe: false, // 是否是线框模式
 });
 // 5.3、创建网格模型对象
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-
-cube.position.z = -10 // 调整z轴位置,近大远小
-
 // 5.4、添加到场景中
 scene.add(cube);
 
-scene.fog = new THREE.Fog(0xffffff, 1, 50);
-
-// 6、添加一个平面，用来接收阴影
-// 6.1、创建平面对象
+// 7、添加一个平面.接收阴影
 const planeGeometry = new THREE.PlaneGeometry(20, 30);
-// 6.2、创建材质对象
-const planeMaterial = new THREE.MeshBasicMaterial({color: 0x999999});
-// 6.3、创建网格模型对象
+const planeMaterial = new THREE.MeshLambertMaterial({
+  color: 0x999999
+});
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-// 6.4、调整平面的角度并添加到场景中
+// 正确的旋转平面的方式
 plane.rotateZ(20);
+// 正确的设置平面位置的方式
 plane.position.z = -10;
 plane.position.x = 3;
 scene.add(plane);
 
+// 6、添加灯光
+// 6.1、创建灯光对象
+const spotLight = new THREE.SpotLight(0xffffff);
+// 6.2、设置灯光位置
+spotLight.position.set(-10, 10, 90);
+// 6.3、设置灯光强度，确保足够照亮立方体
+spotLight.intensity = 8000;
+// 6.3、添加到场景中
+scene.add(spotLight);
 
-// 7、添加一个灯光
-const spotlight = new THREE.SpotLight(0xffffff);
-spotlight.position.set(-10, 10, 90);
-scene.add(spotlight);
-
-
-// 8、阴影设置
-cube.castShadow = true; //让立方体产生阴影
-plane.receiveShadow = true; // 让平面接收阴影
-spotlight.castShadow = true; // 让灯光产生阴影
-renderer.shadowMap.enabled = true; // 开启阴影
-
+cube.castShadow = true; // 允许立方体产生阴影
+plane.receiveShadow = true; // 允许平面接收阴影
+spotLight.castShadow = true; // 允许灯光产生阴影
+renderer.shadowMap.enabled = true; // 允许渲染器产生阴影
 
 onMounted(() => {
   // 10、添加动画，让图形动起来
