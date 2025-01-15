@@ -1,4 +1,5 @@
 import * as dat from "dat.gui";
+import { AmbientLight } from "three";
 
 const basicType = {
   // 颜色
@@ -62,7 +63,8 @@ const basicType = {
 };
 
 const itemTypes = {
-  SpotLight: ["color", "intensity", "distance", "angle"],
+  SpotLight: ["color", "intensity", "distance", "angle"], // 点光源
+  AmbientLight: ["color"], // 环境光
 };
 
 export function initGUIControl(item) {
