@@ -1,5 +1,5 @@
 import * as dat from "dat.gui";
-import { AmbientLight, PointLight } from "three";
+import { AmbientLight, MeshBasicMaterial, PointLight } from "three";
 
 const basicType = {
   // 颜色
@@ -61,7 +61,7 @@ const basicType = {
     },
   },
 
-  // 大地色
+  // 大地的颜色色
   groundColor: {
     method: "addColor",
     getValue: function (item) {
@@ -71,6 +71,44 @@ const basicType = {
       item.groundColor.setStyle(value);
     },
   },
+
+  opacity: {
+    extends: [0, 1],
+    getValue: function (item) {
+      return item.opacity;
+    },
+    setValue: function (item, value) {
+      item.opacity = Number(value);
+    },
+  },
+
+  transparent: {
+    getValue: function (item) {
+      return item.transparent;
+    },
+    setValue: function (item, value) {
+      item.transparent = value;
+    },
+  },
+
+  wireframe: {
+    getValue: function (item) {
+      return item.wireframe;
+    },
+    setValue: function (item, value) {
+      item.wireframe = value;
+    }
+  },
+
+  visible: {
+    getValue: function (item) {
+      return item.visible;
+    },
+    setValue: function (item, value) {
+      item.visible = value;
+    }
+  }
+
 };
 
 const itemTypes = {
@@ -79,6 +117,13 @@ const itemTypes = {
   PointLight: ["color", "intensity", "distance"], // 点光源
   DirectionalLight: ["color", "intensity"], // 平行光
   HemisphereLight: ["skyColor", "groundColor", "intensity"], // 半球光
+  MeshBasicMaterial: [
+    "color",
+    "opacity",
+    "transparent",
+    "wireframe",
+    "visible",
+  ],
 };
 
 export function initGUIControl(item) {
