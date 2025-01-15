@@ -60,13 +60,25 @@ const basicType = {
       item.exponent = Number(value);
     },
   },
+
+  // 大地色
+  groundColor: {
+    method: "addColor",
+    getValue: function (item) {
+      return item.groundColor.getStyle();
+    },
+    setValue: function (item, value) {
+      item.groundColor.setStyle(value);
+    },
+  },
 };
 
 const itemTypes = {
   SpotLight: ["color", "intensity", "distance", "angle"], // 点光源
   AmbientLight: ["color"], // 环境光
-  PointLight: ["color", "intensity", "distance"],
-  DirectionalLight: ["color", "intensity"],
+  PointLight: ["color", "intensity", "distance"], // 点光源
+  DirectionalLight: ["color", "intensity"], // 平行光
+  HemisphereLight: ["skyColor", "groundColor", "intensity"], // 半球光
 };
 
 export function initGUIControl(item) {
